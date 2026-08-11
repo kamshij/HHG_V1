@@ -13,13 +13,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#082617;
-    --tide:#0C3B24;
-    --tide-2:#123F27;
+    --ink:#031F18;
+    --tide:#06382A;
+    --tide-2:#07583B;
     --line: rgba(243,236,216,.14);
     --line-strong: rgba(243,236,216,.28);
     --foam:#F3ECD8;
-    --foam-dim: rgba(243,236,216,.62);
+    --foam-dim: rgba(243,236,216,.90);
     --brass:#F4C300;
     --brass-lt:#FFE066;
     --coral:#E91E8C;
@@ -32,9 +32,9 @@
     margin:0;
     background-color:var(--ink);
     background-image:
-      radial-gradient(rgba(243,236,216,.07) 1.6px, transparent 1.6px),
-      radial-gradient(1200px 700px at 15% -10%, rgba(244,195,0,.08), transparent 60%),
-      radial-gradient(900px 600px at 100% 0%, rgba(233,30,140,.10), transparent 55%);
+      radial-gradient(rgba(243,236,216,.03) 1.6px, transparent 1.6px),
+      radial-gradient(1200px 700px at 15% -10%, rgba(244,195,0,.04), transparent 60%),
+      radial-gradient(900px 600px at 100% 0%, rgba(233,30,140,.05), transparent 55%);
     background-size: 24px 24px, auto, auto;
     background-position: 0 0, 0 0, 0 0;
     color:var(--foam);
@@ -119,13 +119,49 @@
   @keyframes scrollTicker{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
   /* ---------- HERO ---------- */
-  .hero{ padding:96px 0 70px; position:relative; overflow:hidden; }
-  .hero-grid{ display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:center; }
-  .eyebrow{ font-family:'Space Mono',monospace; font-size:12.5px; letter-spacing:.14em; color:var(--brass-lt); text-transform:uppercase; display:flex; align-items:center; gap:10px; margin-bottom:18px;}
+  .hero{ 
+    padding:96px 0 70px; position:relative; overflow:hidden; 
+    background-color: #031F18;
+  }
+.hero {
+  position: relative; /* Needed so ::before stays inside */
+  z-index: 1;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background-image: 
+    radial-gradient(circle at 50% 80%, rgba(244,195,0,0.15) 0%, transparent 60%),
+    radial-gradient(circle at 80% 50%, rgba(0,255,200,0.08) 0%, transparent 50%),
+    url('Sun%20rise.png');
+  background-size: auto, auto, cover;
+  background-position: center, center, center bottom;
+  background-repeat: no-repeat;
+
+  animation: slowPan 30s ease-in-out infinite alternate;
+
+  filter: blur(1.5px); /* 👈 Slight blur effect */
+}
+
+  .hero::after {
+    content: ''; position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(to bottom, rgba(3,31,24,0.95) 0%, rgba(3,31,24,0.8) 55%, rgba(3,31,24,0.4) 100%);
+    pointer-events: none;
+  }
+  @keyframes slowPan {
+    0% { background-position: center, center, center bottom; }
+    100% { background-position: center, center, center calc(100% + 20px); }
+  }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:center; position:relative; z-index:10; }
+  .eyebrow{ font-family:'Space Mono',monospace; font-size:12.5px; letter-spacing:.14em; color:var(--brass-lt); text-transform:uppercase; display:flex; align-items:center; gap:10px; margin-bottom:18px; text-shadow: 0 4px 12px rgba(0,0,0,0.8); }
   .eyebrow::before{ content:''; width:22px; height:1px; background:var(--brass-lt); display:inline-block; }
-  h1.hero-title{ font-size:clamp(44px, 6vw, 78px); line-height:.94; }
+  h1.hero-title{ font-size:clamp(44px, 6vw, 78px); line-height:.94; text-shadow: 0 4px 30px rgba(0,0,0,0.8); }
   h1.hero-title em{ font-style:normal; color:var(--coral); }
-  .hero-sub{ margin-top:22px; max-width:480px; font-size:17px; color:var(--foam-dim); }
+  .hero-sub{ margin-top:22px; max-width:480px; font-size:17px; color:var(--foam-dim); text-shadow: 0 4px 12px rgba(0,0,0,0.8); font-weight: 500; }
   .hero-cta{ margin-top:34px; display:flex; gap:14px; flex-wrap:wrap; }
 
   /* hanging badge (signature element) */
@@ -144,19 +180,23 @@
     transform-origin: top center;
     animation: sway 5.5s ease-in-out infinite;
   }
-  @keyframes sway{ 0%,100%{ transform:rotate(-2.2deg);} 50%{ transform:rotate(2.2deg);} }
+  @keyframes sway{ 
+    0%,100%{ transform:rotate(-2.2deg) translateY(0); } 
+    50%{ transform:rotate(2.2deg) translateY(-8px); } 
+  }
   .badge{
     width:280px; border-radius:16px; overflow:hidden;
-    background:linear-gradient(160deg,#0E3038,#0A2026 60%);
-    border:1px solid var(--line-strong);
-    box-shadow:0 30px 60px -20px rgba(0,0,0,.55);
+    background:linear-gradient(160deg, rgba(14,48,56,0.7), rgba(10,32,38,0.7) 60%);
+    backdrop-filter: blur(16px);
+    border:1px solid rgba(243,236,216,0.35);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8), 0 0 40px rgba(244,195,0,0.15);
     padding:20px 18px 22px;
     text-align:center;
   }
   .badge .hole{ width:26px; height:26px; border-radius:50%; margin:0 auto 12px; background:var(--ink); border:2px solid var(--line-strong); }
   .badge .photo{ width:96px; height:96px; border-radius:50%; margin:6px auto 12px; background:radial-gradient(circle at 35% 30%, #3fb9ac, #123B41); border:3px solid var(--brass-lt); }
   .badge .nm{ font-family:'Fraunces',sans-serif; font-weight:900; font-size:24px; }
-  .badge .ti{ display:inline-block; margin-top:10px; font-family:'Space Mono',monospace; font-weight:700; font-size:10.5px; letter-spacing:.08em; color:var(--foam); background:var(--coral); padding:5px 12px; border-radius:8px; transform:rotate(-4deg); box-shadow:0 6px 14px -6px rgba(233,30,140,.6); }
+  .badge .ti{ display:inline-block; margin-top:10px; font-family:'Space Mono',monospace; font-weight:700; font-size:10.5px; letter-spacing:.08em; color:#031F18; background:#00FFC8; padding:5px 12px; border-radius:8px; transform:rotate(-4deg); box-shadow:0 6px 14px -6px rgba(0,255,200,.6); }
   .badge .rl{ margin-top:10px; font-size:12.5px; color:var(--foam-dim); }
   .badge .stub{ margin-top:16px; padding-top:14px; border-top:1px dashed var(--line-strong); display:flex; justify-content:space-between; align-items:center; }
   .badge .stub .hh{ font-family:'Space Mono',monospace; font-size:11px; color:var(--coral); font-weight:600; }
@@ -168,6 +208,17 @@
   .section-head p{ color:var(--foam-dim); margin-top:14px; font-size:15.5px; }
 
   /* ---------- HOW IT WORKS ---------- */
+  #how { position: relative; }
+  #how::before {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    background-image: url('hackers.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+  #how > .wrap { position: relative; z-index: 1; }
+  
   .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; }
   .step{ background:var(--ink); padding:34px 28px; }
   .step .num{ font-family:'Space Mono',monospace; color:var(--brass-lt); font-size:13px; }
@@ -292,7 +343,21 @@
   .titlepool{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
   .titlepool span{ font-family:'Space Mono',monospace; font-size:11px; padding:5px 10px; border:1px solid var(--line-strong); border-radius:999px; color:var(--foam-dim); }
 
-  footer{ border-top:1px solid var(--line); padding:44px 0; }
+  footer{ 
+    border-top:none; 
+    padding: 180px 0 80px; 
+    position: relative;
+    background-image: url('footer%20trees.png');
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+  }
+  footer::before {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(to bottom, var(--ink) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  footer > .wrap { position: relative; z-index: 1; }
   .foot-row{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
   .foot-row p{ font-size:12.5px; color:var(--foam-dim); font-family:'Space Mono',monospace; }
 
@@ -319,8 +384,8 @@
 <header class="site">
   <div class="wrap navrow">
     <a class="brand" href="#top">
-      <span class="brand-mark">HH</span>
-      <span class="brand-text">HH GOA <span>2026</span></span>
+      <span class="brand-mark" style="width:48px;height:48px;background:transparent;"><img src="logo1.png" alt="Logo" style="width:100%;height:100%;object-fit:contain;"></span>
+      <span class="brand-text">HH GOA <span>2026</span> <span style="font-size: 11px; vertical-align: middle; margin-left: 4px; padding: 2px 6px; border-radius: 4px; background: rgba(244,195,0,0.15); color: var(--brass-lt);">x COLLAB</span></span>
     </a>
     <nav class="links">
       <a href="#how">How it works</a>
@@ -333,11 +398,11 @@
 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track">
-    <span>NOW ISSUING · <b>HH GOA 2026 BUILDER CREDENTIALS</b></span>
+    <span>NOW ISSUING · <b>HH GOA 2026 x COLLAB CREDENTIALS</b></span>
     <span>SHARE WITH <b>#FRAMEINGOA</b> TO BE COUNTED</span>
     <span>THREE THEMES · <b>OCEAN — TROPICAL — CYBER</b></span>
     <span>NO SIGN-UP · <b>RUNS ENTIRELY IN YOUR BROWSER</b></span>
-    <span>NOW ISSUING · <b>HH GOA 2026 BUILDER CREDENTIALS</b></span>
+    <span>NOW ISSUING · <b>HH GOA 2026 x COLLAB CREDENTIALS</b></span>
     <span>SHARE WITH <b>#FRAMEINGOA</b> TO BE COUNTED</span>
     <span>THREE THEMES · <b>OCEAN — TROPICAL — CYBER</b></span>
     <span>NO SIGN-UP · <b>RUNS ENTIRELY IN YOUR BROWSER</b></span>
@@ -363,8 +428,9 @@
           <div class="lanyard"></div>
           <div class="badge-swing">
             <div class="badge">
-              <div class="hole"></div>
-              <div class="photo"></div>
+              <img src="logo1.png" style="width: 76px; height: 76px; margin: 0 auto 10px; display: block;" alt="Logo">
+              <div style="font-family: 'Space Mono', monospace; font-weight: 600; font-size: 11.5px; color: #00FFC8; margin-bottom: 20px; letter-spacing: 0.05em;">BUILDER CREDENTIAL · HH GOA 2026</div>
+              <div class="photo" style="margin-top:0;"></div>
               <div class="nm">Ada Fernandes</div>
               <div class="ti">AI Explorer</div>
               <div class="rl">ML Engineer · Panjim</div>
@@ -489,7 +555,7 @@
             <div class="field">
               <label>Theme</label>
               <div class="swatches">
-                <button type="button" class="swatch active" data-theme="jungle"><div class="sw-dot"></div>Jungle</button>
+                <button type="button" class="swatch active" data-theme="jungle"><div class="sw-dot"></div>HH Goa</button>
                 <button type="button" class="swatch" data-theme="ocean"><div class="sw-dot"></div>Ocean</button>
                 <button type="button" class="swatch" data-theme="tropical"><div class="sw-dot"></div>Tropical</button>
                 <button type="button" class="swatch" data-theme="cyber"><div class="sw-dot"></div>Cyber</button>
@@ -577,7 +643,7 @@
   };
 
   const THEMES = {
-    jungle:   { bgA:'#0B4A2C', bgB:'#0F5C36', bgC:'#082617', accent:'#F4C300', accent2:'#FCEFC7', chip:'#E91E8C', chipText:'#FCEFF6', text:'#F3ECD8', pillBg:'rgba(244,195,0,0.16)', pillBorder:'rgba(244,195,0,0.55)' },
+    jungle:   { bgA:'#031F18', bgB:'#06382A', bgC:'#021510', accent:'#F4C300', accent2:'#00FFC8', chip:'#E91E8C', chipText:'#FCEFF6', text:'#F3ECD8', pillBg:'rgba(0,255,200,0.16)', pillBorder:'rgba(0,255,200,0.55)' },
     ocean:    { bgA:'#062028', bgB:'#0F3A45', bgC:'#0A2A31', accent:'#4FD6C9', accent2:'#BFE9E3', text:'#EAF3EE', pillBg:'rgba(79,214,201,0.14)', pillBorder:'rgba(79,214,201,0.55)' },
     tropical: { bgA:'#2B1608', bgB:'#8C3A14', bgC:'#C4531B', accent:'#FF8A3D', accent2:'#7ED957', text:'#FFF3E6', pillBg:'rgba(255,138,61,0.16)', pillBorder:'rgba(255,138,61,0.55)' },
     cyber:    { bgA:'#130722', bgB:'#2E0F4F', bgC:'#1C0A38', accent:'#FF3EA5', accent2:'#E8FF3E', text:'#F5EAFF', pillBg:'rgba(255,62,165,0.16)', pillBorder:'rgba(255,62,165,0.55)' }
@@ -808,6 +874,11 @@
     return c;
   }
 
+  const collabLogo = new Image();
+  collabLogo.src = 'logo1.png';
+  let collabLogoLoaded = false;
+  collabLogo.onload = () => { collabLogoLoaded = true; if(!renderPending) render(); };
+
   /* ---------------- RENDER ---------------- */
   let renderPending = false;
   function render(){
@@ -904,14 +975,24 @@
       ctx.beginPath(); ctx.moveTo(x,y+dy*24); ctx.lineTo(x,y); ctx.lineTo(x+dx*24,y); ctx.stroke();
     });
 
-    // punch hole + eyebrow
-    ctx.beginPath(); ctx.arc(W/2, 66, 15, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fill();
-    ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth=2; ctx.stroke();
+    if (collabLogoLoaded) {
+      const logoW = 90, logoH = 90;
+      ctx.drawImage(collabLogo, W/2 - logoW/2, 40, logoW, logoH);
+      
+      // eyebrow text
+      ctx.font = '600 14px "Space Mono", monospace';
+      ctx.fillStyle = th.accent2; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillText('BUILDER CREDENTIAL · HH GOA 2026', W/2, 40 + logoH + 32);
+    } else {
+      // punch hole + eyebrow
+      ctx.beginPath(); ctx.arc(W/2, 66, 15, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(0,0,0,.55)'; ctx.fill();
+      ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth=2; ctx.stroke();
 
-    ctx.font = '600 14px "Space Mono", monospace';
-    ctx.fillStyle = th.accent2; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
-    ctx.fillText('BUILDER CREDENTIAL · HH GOA 2026', W/2, 118);
+      ctx.font = '600 14px "Space Mono", monospace';
+      ctx.fillStyle = th.accent2; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+      ctx.fillText('BUILDER CREDENTIAL · HH GOA 2026', W/2, 118);
+    }
 
     // serial number
     ctx.font = '500 12px "Space Mono", monospace';
@@ -1079,11 +1160,16 @@
 
     // brand chip top-left
     ctx.font = '600 20px "Space Mono", monospace';
-    roundRect(ctx, 44,44, ctx.measureText('HH GOA 2026').width+40, 44, 22);
-    ctx.fillStyle='rgba(0,0,0,.5)'; ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.lineWidth=1.5; ctx.stroke();
-    ctx.fillStyle = th.accent2; ctx.textAlign='left'; ctx.textBaseline='middle';
-    ctx.fillText('HH GOA 2026', 64, 66);
+    const brandW = ctx.measureText('HH GOA 2026').width;
+    roundRect(ctx, 44, 44, brandW + 40 + (collabLogoLoaded ? 36 : 0), 44, 22);
+    ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.fillStyle = th.accent2; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText('HH GOA 2026', 64 + (collabLogoLoaded ? 36 : 0), 66);
+    
+    if (collabLogoLoaded) {
+      ctx.drawImage(collabLogo, 44 + 4, 44 + 4, 36, 36);
+    }
 
     // bottom text bar
     const title = buildTitle(state.role, state.tech, state.name);
@@ -1126,9 +1212,10 @@
   /* ---------------- SHARE (Twitter/X Web Intent — #FrameInGoa hard-coded) ---------------- */
   function getShareText(){
     const title = buildTitle(state.role, state.tech, state.name);
-    const namePart = state.name ? `${state.name} just` : 'Just';
+    const namePart = state.name ? `I'm ${state.name}, heading to` : 'Heading to';
     const titlePart = title !== '—' ? ` as a ${title}` : '';
-    return `${namePart} generated my HH Goa 2026 builder credential${titlePart}. #FrameInGoa`;
+    const techPart = state.tech.length ? ` building with ${state.tech.join(', ')}` : '';
+    return `${namePart} HH Goa 2026${titlePart}${techPart}! Lock in. #FrameInGoa`;
   }
 
   function getCanvasBlob(){
